@@ -1,14 +1,20 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 
-import { SET_CITY } from './ActionTypes';
-import cityReducer from './reducer';
-import fromCity from './selectors';
+import { SET_CITY } from './state/ActionTypes';
+import cityReducer from './state/reducer';
+import * as fromCity from './state/selectors';
 
-const CitiesSelector = ({ initialState, onSubmit }) => {
-  const [state, dispatch] = useReducer(cityReducer, initialState);
+const CitiesSelector = ({ city, onSubmit }) => {
+  const [state, dispatch] = useReducer(cityReducer, city);
 
-  const city = fromCity.city(state);
+  const cityName = fromCity.city(state);
   const setCity = value => dispatch({ type: SET_CITY, payload: value });
+
+  useEffect(() => {
+    if (city !== fromCity.city(state)) {
+      setCity(city);
+    }
+  }, [city]);
 
   return (
     <div style={{ border: '1px solid #dedede', margin: '8px', padding: '16px' }}>
@@ -17,7 +23,7 @@ const CitiesSelector = ({ initialState, onSubmit }) => {
         <button onClick={() => setCity('Madrid')}>Set city to Madrid</button>&nbsp;
         <button onClick={() => setCity('Barcelona')}>Set city to Barcelona</button>
       </div>
-      <button onClick={() => onSubmit(state)}>Submit {city} to parent</button>
+      <button onClick={() => onSubmit(state)}>Submit {cityName} to parent</button>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { HYDRATE_STATE, HYDRATE_STATE_SUCCESS, UPDATE_STATE } from '../ActionTypes';
+import { HYDRATE_STATE, HYDRATE_STATE_SUCCESS } from '../ActionTypes';
 
 const dispatchMiddleware = dispatch => action => {
   const PROPERTY_KEY = 'property';

@@ -5,7 +5,6 @@ const dispatchMiddleware = dispatch => action => {
   switch (action.type) {
     case LOAD_AGENTS:
       loadAgents(dispatch);
-      debugger;
       break;
     default:
       break;

@@ -7,7 +7,7 @@ import AgentSelector from './AgentSelector';
 import * as fromListing from './state/selectors';
 import dispatchMiddleware from './state/effects';
 import reducer, { initialState } from './state/reducer';
-import { MERGE_STATE, HYDRATE_STATE, UPDATE_STATE } from './state/ActionTypes';
+import { MERGE_STATE, HYDRATE_STATE, UPDATE_STATE, CLEAR_STATE } from './state/ActionTypes';
 
 // EFFECTS
 const initialize = ({ dispatch }) => dispatch({ type: HYDRATE_STATE });
@@ -30,6 +30,7 @@ const App = () => {
       </pre>
       <CitiesSelector city={fromListing.city(state)} onSubmit={city => mergeState({ city })} />
       <AgentSelector homeAgent={fromListing.homeAgent(state)} onSubmit={homeAgent => mergeState({ homeAgent })} />
+      <button onClick={() => dispatch({ type: CLEAR_STATE })}>Clear state</button>
     </div>
   );
 };

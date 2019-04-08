@@ -1,9 +1,9 @@
 import React, { Fragment, useReducer, useEffect } from 'react';
-import dispatchMiddleware from './effects';
-import reducer from './reducer';
-import * as fromAgents from './selectors';
+import dispatchMiddleware from './state/effects';
+import reducer from './state/reducer';
+import * as fromAgents from './state/selectors';
 
-import { SELECT_AGENT, LOAD_AGENTS } from './ActionTypes';
+import { SELECT_AGENT, LOAD_AGENTS } from './state/ActionTypes';
 
 const initialStateFrom = homeAgent => ({
   homeAgents: null,

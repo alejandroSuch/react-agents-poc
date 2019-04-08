@@ -2,3 +2,4 @@ export const HYDRATE_STATE = 'HYDRATE_STATE';
 export const HYDRATE_STATE_SUCCESS = 'HYDRATE_STATE_SUCCESS';
 export const MERGE_STATE = 'MERGE_STATE';
 export const UPDATE_STATE = 'UPDATE_STATE';
+export const CLEAR_STATE = 'CLEAR_STATE';
