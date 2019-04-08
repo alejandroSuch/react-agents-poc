@@ -4,62 +4,30 @@ import './App.css';
 import CitiesSelector from './CitiesSelector';
 import AgentSelector from './AgentSelector';
 
-// ACTION TYPES
-const ActionTypes = {
-  HYDRATE_STATE: 'HYDRATE_STATE',
-  HYDRATE_STATE_SUCCESS: 'HYDRATE_STATE_SUCCESS',
-  MERGE_STATE: 'MERGE_STATE',
-};
-
-// REDUCERS
-const initialState = {};
-const reducer = (state, { type, payload }) => {
-  switch (type) {
-    case ActionTypes.HYDRATE_STATE_SUCCESS:
-      return payload;
-    case ActionTypes.MERGE_STATE:
-      return { ...state, ...payload };
-    default:
-      return state;
-  }
-};
-
-// SELECTORS
-const fromListing = {
-  city: state => state.city,
-  homeAgent: state => state.homeAgent,
-};
+import * as fromListing from './state/selectors';
+import dispatchMiddleware from './state/effects';
+import reducer, { initialState } from './state/reducer';
+import { MERGE_STATE, HYDRATE_STATE, UPDATE_STATE } from './state/ActionTypes';
 
 // EFFECTS
-const PROPERTY_KEY = 'property';
-const initialize = ({ dispatch }) => dispatch({ type: ActionTypes.HYDRATE_STATE });
-const handleStateChanged = ({ state }) => sessionStorage.setItem(PROPERTY_KEY, JSON.stringify(state));
-
-// MIDDLEWARE TO USE SIDE EFFECTS
-const dispatchMiddleware = dispatch => action => {
-  switch (action.type) {
-    case ActionTypes.HYDRATE_STATE:
-      let prop = sessionStorage.getItem(PROPERTY_KEY) || '{}';
-      dispatch({ type: ActionTypes.HYDRATE_STATE_SUCCESS, payload: JSON.parse(prop) });
-      break;
-    default:
-      dispatch(action);
-  }
-};
+const initialize = ({ dispatch }) => dispatch({ type: HYDRATE_STATE });
+const handleStateChanged = ({ state, dispatch }) => dispatch({ type: UPDATE_STATE, payload: state });
 
 const App = () => {
   const [state, _dispatch] = useReducer(reducer, initialState);
   const dispatch = dispatchMiddleware(_dispatch);
 
   useEffect(() => initialize({ dispatch }), []);
-  useEffect(() => handleStateChanged({ state }), [state]);
+  useEffect(() => handleStateChanged({ state, dispatch }), [state]);
 
-  const mergeState = payload => dispatch({ type: ActionTypes.MERGE_STATE, payload });
+  const mergeState = payload => dispatch({ type: MERGE_STATE, payload });
 
   return (
     <div className="App">
-      <h3>Current city is {fromListing.city(state)}</h3>
-      <pre>{JSON.stringify(state, 2)}</pre>
+      <h3>Current state is</h3>
+      <pre style={{ textAlign: 'left', border: '1px solid #dedede', display: 'inline-block', padding: '16px' }}>
+        {JSON.stringify(state, null, 2)}
+      </pre>
       <CitiesSelector city={fromListing.city(state)} onSubmit={city => mergeState({ city })} />
       <AgentSelector homeAgent={fromListing.homeAgent(state)} onSubmit={homeAgent => mergeState({ homeAgent })} />
     </div>
