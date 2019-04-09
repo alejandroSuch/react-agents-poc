@@ -1,6 +1,12 @@
 import { HYDRATE_STATE_SUCCESS, MERGE_STATE, CLEAR_STATE } from './ActionTypes';
 
-export const initialState = {};
+import { initialState as city } from '../CitiesSelector/state/reducer';
+import { initialState as agent } from '../AgentSelector/state/reducer';
+
+export const initialState = {
+  city,
+  agent,
+};
 
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {

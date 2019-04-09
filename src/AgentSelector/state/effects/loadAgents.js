@@ -1,10 +1,14 @@
-import { LOAD_AGENTS_SUCCESS } from '../ActionTypes';
+import { loadAgentsSuccessAction, loadAgentsErrorAction } from '../ActionTypes';
 
 const loadAgents = async dispatch => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/users');
-  const data = await response.json();
-  const homeAgents = data.map(({ id, name }) => ({ id, name }));
-  dispatch({ type: LOAD_AGENTS_SUCCESS, payload: homeAgents });
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const data = await response.json();
+    const agents = data.map(({ id, name }) => ({ id, name }));
+    dispatch(loadAgentsSuccessAction({ agents }));
+  } catch (err) {
+    dispatch(loadAgentsErrorAction({ message: err.message }));
+  }
 };
 
 export default loadAgents;

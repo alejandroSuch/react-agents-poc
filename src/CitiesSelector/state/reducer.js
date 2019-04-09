@@ -1,6 +1,6 @@
 import { SET_CITY } from './ActionTypes';
 
-const initialState = null;
+export const initialState = null;
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

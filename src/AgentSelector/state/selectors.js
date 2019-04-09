@@ -1,7 +1,7 @@
 export const loading = state => state.loading || false;
-export const homeAgents = state => state.homeAgents || [];
+export const agents = state => state.agents || [];
 export const selectedAgent = state => state.selected;
 export const selectedAgentName = state => {
-  const homeAgent = selectedAgent(state);
-  return homeAgent && homeAgent.name;
+  const agent = selectedAgent(state);
+  return agent && agent.name;
 };

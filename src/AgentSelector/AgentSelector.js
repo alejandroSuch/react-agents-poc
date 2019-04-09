@@ -1,38 +1,46 @@
 import React, { Fragment, useReducer, useEffect } from 'react';
+
 import dispatchMiddleware from './state/effects';
 import reducer from './state/reducer';
 import * as fromAgents from './state/selectors';
+import { loadAgentsAction, selectAgentAction } from './state/ActionTypes';
 
-import { SELECT_AGENT, LOAD_AGENTS } from './state/ActionTypes';
-
-const initialStateFrom = homeAgent => ({
-  homeAgents: null,
-  selected: homeAgent,
+const initialStateFrom = agent => ({
+  agents: null,
+  selected: agent,
   loading: false,
   error: null,
 });
 
-const AgentSelector = ({ homeAgent, onSubmit }) => {
-  const [state, _dispatch] = useReducer(reducer, initialStateFrom(homeAgent));
-
+const AgentSelector = ({ agent, onSubmit }) => {
+  // INIT STATE
+  const [state, _dispatch] = useReducer(reducer, initialStateFrom(agent));
   const dispatch = dispatchMiddleware(_dispatch);
 
+  // EFFECTS
+  useEffect(() => dispatch(loadAgentsAction()), []);
+  useEffect(() => selectAgent(agent), [agent]);
+
+  // DISPATCH ACTIONS
+  const selectAgent = agent => dispatch(selectAgentAction({ agent }));
+
+  /**
+   * OTHER LOGIC WOULD GO HERE (EX: VALIDATION)
+   */
+
+  // SELECT ELEMENTS TO RENDER
   const loading = fromAgents.loading(state);
-  const homeAgents = fromAgents.homeAgents(state);
+  const agents = fromAgents.agents(state);
 
-  const selectAgent = homeAgent => dispatch({ type: SELECT_AGENT, payload: homeAgent });
-
-  useEffect(() => dispatch({ type: LOAD_AGENTS }), []);
-  useEffect(() => selectAgent(homeAgent), [homeAgent]);
-
+  // RENDER
   return (
     <div style={{ border: '1px solid #dedede', margin: '8px', padding: '8px' }}>
-      <h3>Block 2: homeAgents</h3>
+      <h3>Block 2: agents</h3>
       {loading && <h4>Loading...</h4>}
       {!loading && (
         <Fragment>
-          <h4>Select a homeAgent (you selected {fromAgents.selectedAgentName(state)} )</h4>
-          {homeAgents.map(({ id, name }) => (
+          <h4>Select a agent (you selected {fromAgents.selectedAgentName(state)} )</h4>
+          {agents.map(({ id, name }) => (
             <button onClick={() => selectAgent({ id, name })} style={{ padding: '16px', margin: '8px' }} key={id}>
               {name}
             </button>

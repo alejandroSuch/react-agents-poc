@@ -1,15 +1,21 @@
-import { HYDRATE_STATE, HYDRATE_STATE_SUCCESS } from '../ActionTypes';
+import { HYDRATE_STATE, hydrateStateSuccessAction, UPDATE_STATE } from '../ActionTypes';
+
+import { initialState } from '../reducer';
 
 const dispatchMiddleware = dispatch => action => {
   const PROPERTY_KEY = 'property';
 
   switch (action.type) {
     case HYDRATE_STATE:
-      let prop = sessionStorage.getItem(PROPERTY_KEY) || '{}';
-      dispatch({ type: HYDRATE_STATE_SUCCESS, payload: JSON.parse(prop) });
+      const prop = sessionStorage.getItem(PROPERTY_KEY) || JSON.stringify(initialState);
+      const state = JSON.parse(prop);
+      dispatch(hydrateStateSuccessAction({ state }));
+      break;
+    case UPDATE_STATE:
+      sessionStorage.setItem(PROPERTY_KEY, JSON.stringify(action.payload));
       break;
     default:
-      sessionStorage.setItem(PROPERTY_KEY, JSON.stringify(action.payload));
+      break;
   }
 
   dispatch(action);

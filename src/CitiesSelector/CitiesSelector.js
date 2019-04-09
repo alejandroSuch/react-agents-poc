@@ -1,21 +1,31 @@
 import React, { useReducer, useEffect } from 'react';
 
-import { SET_CITY } from './state/ActionTypes';
+import { setCityAction } from './state/ActionTypes';
 import cityReducer from './state/reducer';
 import * as fromCity from './state/selectors';
 
 const CitiesSelector = ({ city, onSubmit }) => {
+  // INIT STATE
   const [state, dispatch] = useReducer(cityReducer, city);
 
-  const cityName = fromCity.city(state);
-  const setCity = value => dispatch({ type: SET_CITY, payload: value });
-
+  // EFFECTS
   useEffect(() => {
     if (city !== fromCity.city(state)) {
       setCity(city);
     }
   }, [city]);
 
+  // DISPATCH ACTIONS
+  const setCity = city => dispatch(setCityAction({ city }));
+
+  /**
+   * OTHER LOGIC WOULD GO HERE (EX: VALIDATION)
+   */
+
+  // SELECT ELEMENTS TO RENDER
+  const cityName = fromCity.city(state);
+
+  // RENDER
   return (
     <div style={{ border: '1px solid #dedede', margin: '8px', padding: '16px' }}>
       <h3>Block 1: city</h3>
