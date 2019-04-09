@@ -12,11 +12,7 @@ const CitiesSelector = ({ city, onSubmit }) => {
   const cityName = fromCity.city(state);
 
   // EFFECTS
-  useEffect(() => {
-    if (city !== fromCity.city(state)) {
-      setCity(city);
-    }
-  }, [city]);
+  useEffect(() => setCity(city), [city]);
 
   // DISPATCH ACTIONS
   const setCity = city => dispatch(setCityAction({ city }));

@@ -8,6 +8,7 @@ import * as fromListing from './state/selectors';
 import dispatchMiddleware from './state/effects';
 import reducer, { initialState } from './state/reducer';
 import { mergeStateAction, hydrateStateAction, updateStateAction, clearStateAction } from './state/ActionTypes';
+import Address from './Address';
 
 const App = () => {
   // INIT STATE
@@ -17,6 +18,7 @@ const App = () => {
   // SELECT ELEMENTS TO RENDER OR USE
   const city = fromListing.city(state);
   const agent = fromListing.agent(state);
+  const address = fromListing.address(state);
 
   // EFFECTS
   useEffect(() => dispatch(hydrateStateAction()), []);
@@ -40,6 +42,7 @@ const App = () => {
       </pre>
       <CitiesSelector city={city} onSubmit={city => mergeState({ city })} />
       <AgentSelector agent={agent} onSubmit={agent => mergeState({ agent })} onError={handleError} />
+      <Address address={address} onSubmit={address => mergeState({ address })} />
       <button onClick={() => clearState()}>Clear state</button>
     </div>
   );

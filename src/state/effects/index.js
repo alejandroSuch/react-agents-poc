@@ -4,6 +4,7 @@ import { initialState } from '../reducer';
 
 const dispatchMiddleware = dispatch => action => {
   const PROPERTY_KEY = 'property';
+  dispatch(action);
 
   switch (action.type) {
     case HYDRATE_STATE:
@@ -11,14 +12,10 @@ const dispatchMiddleware = dispatch => action => {
       const state = JSON.parse(prop);
       dispatch(hydrateStateSuccessAction({ state }));
       break;
-    case UPDATE_STATE:
+    default:
       sessionStorage.setItem(PROPERTY_KEY, JSON.stringify(action.payload));
       break;
-    default:
-      break;
   }
-
-  dispatch(action);
 };
 
 export default dispatchMiddleware;
