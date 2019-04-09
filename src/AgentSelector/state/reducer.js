@@ -3,6 +3,9 @@ import { LOAD_AGENTS, LOAD_AGENTS_ERROR, LOAD_AGENTS_SUCCESS, SELECT_AGENT } fro
 export const initialState = {
   id: null,
   name: null,
+  loading: false,
+  agents: [],
+  error: null,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -12,7 +15,7 @@ const reducer = (state = initialState, { type, payload }) => {
     case LOAD_AGENTS_SUCCESS:
       return { ...state, loading: false, agents: payload };
     case LOAD_AGENTS_ERROR:
-      return { ...state, loading: false, agents: null };
+      return { ...state, loading: false, agents: [], error: payload };
     case SELECT_AGENT:
       return { ...state, selected: payload };
     default:

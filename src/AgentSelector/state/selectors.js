@@ -5,3 +5,4 @@ export const selectedAgentName = state => {
   const agent = selectedAgent(state);
   return agent && agent.name;
 };
+export const error = state => state.error;

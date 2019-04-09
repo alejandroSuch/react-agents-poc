@@ -14,6 +14,10 @@ const App = () => {
   const [state, _dispatch] = useReducer(reducer, initialState);
   const dispatch = dispatchMiddleware(_dispatch);
 
+  // SELECT ELEMENTS TO RENDER OR USE
+  const city = fromListing.city(state);
+  const agent = fromListing.agent(state);
+
   // EFFECTS
   useEffect(() => dispatch(hydrateStateAction()), []);
   useEffect(() => dispatch(updateStateAction({ state })), [state]);
@@ -25,10 +29,7 @@ const App = () => {
   /**
    * OTHER LOGIC WOULD GO HERE (EX: VALIDATION)
    */
-
-  // SELECT ELEMENTS TO RENDER
-  const city = fromListing.city(state);
-  const agent = fromListing.agent(state);
+  const handleError = error => alert(error);
 
   // RENDER
   return (
@@ -38,7 +39,7 @@ const App = () => {
         {JSON.stringify(state, null, 2)}
       </pre>
       <CitiesSelector city={city} onSubmit={city => mergeState({ city })} />
-      <AgentSelector agent={agent} onSubmit={agent => mergeState({ agent })} />
+      <AgentSelector agent={agent} onSubmit={agent => mergeState({ agent })} onError={handleError} />
       <button onClick={() => clearState()}>Clear state</button>
     </div>
   );

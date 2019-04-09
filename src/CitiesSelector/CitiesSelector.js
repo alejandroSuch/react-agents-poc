@@ -8,6 +8,9 @@ const CitiesSelector = ({ city, onSubmit }) => {
   // INIT STATE
   const [state, dispatch] = useReducer(cityReducer, city);
 
+  // SELECT ELEMENTS TO RENDER OR USE
+  const cityName = fromCity.city(state);
+
   // EFFECTS
   useEffect(() => {
     if (city !== fromCity.city(state)) {
@@ -21,9 +24,6 @@ const CitiesSelector = ({ city, onSubmit }) => {
   /**
    * OTHER LOGIC WOULD GO HERE (EX: VALIDATION)
    */
-
-  // SELECT ELEMENTS TO RENDER
-  const cityName = fromCity.city(state);
 
   // RENDER
   return (

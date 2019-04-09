@@ -1,11 +1,15 @@
 import { HYDRATE_STATE_SUCCESS, MERGE_STATE, CLEAR_STATE } from './ActionTypes';
 
 import { initialState as city } from '../CitiesSelector/state/reducer';
-import { initialState as agent } from '../AgentSelector/state/reducer';
+import { initialState as agentState } from '../AgentSelector/state/reducer';
 
+// STATE MAPPERS
+const mapAgentFrom = ({ agentState }) => ({ id: agentState.id, name: agentState.name });
+
+// STATE
 export const initialState = {
   city,
-  agent,
+  agent: mapAgentFrom({ agentState }),
 };
 
 const reducer = (state = initialState, { type, payload }) => {

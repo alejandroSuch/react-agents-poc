@@ -12,14 +12,24 @@ const initialStateFrom = agent => ({
   error: null,
 });
 
-const AgentSelector = ({ agent, onSubmit }) => {
+const AgentSelector = ({ agent, onSubmit, onError }) => {
   // INIT STATE
   const [state, _dispatch] = useReducer(reducer, initialStateFrom(agent));
   const dispatch = dispatchMiddleware(_dispatch);
 
+  // SELECT ELEMENTS TO RENDER OR USE
+  const loading = fromAgents.loading(state);
+  const agents = fromAgents.agents(state);
+  const error = fromAgents.error(state);
+
   // EFFECTS
   useEffect(() => dispatch(loadAgentsAction()), []);
   useEffect(() => selectAgent(agent), [agent]);
+  useEffect(() => {
+    if (error) {
+      onError(error);
+    }
+  }, [error]);
 
   // DISPATCH ACTIONS
   const selectAgent = agent => dispatch(selectAgentAction({ agent }));
@@ -27,10 +37,6 @@ const AgentSelector = ({ agent, onSubmit }) => {
   /**
    * OTHER LOGIC WOULD GO HERE (EX: VALIDATION)
    */
-
-  // SELECT ELEMENTS TO RENDER
-  const loading = fromAgents.loading(state);
-  const agents = fromAgents.agents(state);
 
   // RENDER
   return (
